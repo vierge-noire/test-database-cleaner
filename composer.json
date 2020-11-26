@@ -1,0 +1,48 @@
+{
+    "name": "vierge-noire/phpunit-listener",
+    "description": "A PHPUnit listener to refresh your database between each test.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Pablo Ramirez",
+            "email": "pabloelcolombiano@gmail.com"
+        },
+        {
+            "name": "Nicolas Masson",
+            "email": "nicolas@b-projects.tech"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.3",
+        "phpunit/phpunit": "^6.1"
+    },
+    "require-dev": {
+        "cakephp/cakephp": "^4.0",
+        "cakephp/migrations": "^3.0",
+        "josegonzalez/dotenv": "dev-master",
+        "phpstan/phpstan": "^0.12.48@dev",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ViergeNoirePHPUnitListener\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TestApp\\": "tests/TestApp/src",
+            "ViergeNoirePHPUnitListener\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "run-tests-mysql": "bash run_tests.sh Mysql",
+        "run-tests-pgsql": "bash run_tests.sh Postgres",
+        "run-tests-sqlite": "bash run_tests.sh Sqlite",
+        "run-phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
