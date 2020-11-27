@@ -14,35 +14,11 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Test\TestCase;
 
-
-use PHPUnit\Framework\TestCase;
-use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
-use ViergeNoirePHPUnitListener\DatabaseCleaner;
+use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class DatabaseCleanerTest extends TestCase
 {
-    /**
-     * @var DatabaseCleaner
-     */
-    public $databaseCleaner;
-
-    /**
-     * @var AbstractConnection
-     */
-    public $testConnection;
-
-    public function setUp()
-    {
-        $this->databaseCleaner = new DatabaseCleaner(TestUtil::getConnectionManager());
-        $this->testConnection = $this->databaseCleaner->getSniffer('test')->getConnection();
-    }
-
-    public function tearDown()
-    {
-        unset($this->databaseCleaner);
-        unset($this->testConnection);
-    }
 
     public function testGetActiveConnections()
     {

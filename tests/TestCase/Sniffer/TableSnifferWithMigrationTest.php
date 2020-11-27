@@ -13,52 +13,27 @@ declare(strict_types=1);
  */
 namespace ViergeNoirePHPUnitListener\Test\TestCase\Sniffer;
 
-use PHPUnit\Framework\TestCase;
-use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
-use ViergeNoirePHPUnitListener\DatabaseCleaner;
-use ViergeNoirePHPUnitListener\TableSniffer\BaseTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\MysqlTriggerBasedTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\TriggerBasedTableSnifferInterface;
-use ViergeNoirePHPUnitListener\Test\Traits\ArrayComparerTrait;
+use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class TableSnifferWithMigrationTest extends TestCase
 {
-    use ArrayComparerTrait;
-
     public $migrations;
 
-    /**
-     * @var DatabaseCleaner
-     */
-    public $databaseCleaner;
-
-    /**
-     * @var AbstractConnection
-     */
-    public $testConnection;
-
-    /**
-     * @var BaseTableSniffer
-     */
-    public $testSniffer;
-
-    public function setUp(): void
+    public function setUp()
     {
-        $this->databaseCleaner  = new DatabaseCleaner(TestUtil::getConnectionManager());
-        $this->testSniffer      = $this->databaseCleaner->getSniffer('test');
-        $this->testConnection   = $this->testSniffer->getConnection();
-        $this->migrations       = TestUtil::runMigrations();
+        parent::setUp();
+        $this->migrations = TestUtil::runMigrations();
     }
 
     public function tearDown(): void
     {
-        TestUtil::rollbackMigrations($this->migrations);
-        TestUtil::rollbackMigrations($this->migrations);
+        parent::tearDown();
 
-        unset($this->databaseCleaner);
-        unset($this->testSniffer);
-        unset($this->testConnection);
+        TestUtil::rollbackMigrations($this->migrations);
+        TestUtil::rollbackMigrations($this->migrations);
         unset($this->migrations);
     }
 

@@ -13,54 +13,13 @@ declare(strict_types=1);
  */
 namespace ViergeNoirePHPUnitListener\Test\TestCase\Sniffer;
 
-use PHPUnit\Framework\TestCase;
-use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
-use ViergeNoirePHPUnitListener\DatabaseCleaner;
-use ViergeNoirePHPUnitListener\TableSniffer\BaseTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\MysqlTriggerBasedTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\TriggerBasedTableSnifferInterface;
-use ViergeNoirePHPUnitListener\Test\Traits\ArrayComparerTrait;
+use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class BaseTableSnifferTest extends TestCase
 {
-    use ArrayComparerTrait;
-
-    /**
-     * @var DatabaseCleaner
-     */
-    public $databaseCleaner;
-
-    /**
-     * @var AbstractConnection
-     */
-    public $testConnection;
-
-    /**
-     * @var BaseTableSniffer
-     */
-    public $testSniffer;
-
-    public function setUp()
-    {
-        $this->databaseCleaner  = new DatabaseCleaner(TestUtil::getConnectionManager());
-        $this->testSniffer      = $this->databaseCleaner->getSniffer('test');
-        $this->testConnection   = $this->testSniffer->getConnection();
-    }
-
-    public function tearDown()
-    {
-        unset($this->databaseCleaner);
-        unset($this->testSniffer);
-        unset($this->testConnection);
-    }
-
-    private function driverIs(string $driver): bool
-    {
-
-        return $this->databaseCleaner->getConnectionManager()->getDriver('test') === $driver;
-    }
-
     public function dataProviderOfDirtyTables()
     {
         return [

@@ -13,47 +13,11 @@ declare(strict_types=1);
  */
 namespace ViergeNoirePHPUnitListener\Test\DropTablesTestCase;
 
-use PHPUnit\Framework\TestCase;
-use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
-use ViergeNoirePHPUnitListener\DatabaseCleaner;
-use ViergeNoirePHPUnitListener\TableSniffer\BaseTableSniffer;
+use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class TableSnifferDropCountriesTest extends TestCase
 {
-    /**
-     * @var DatabaseCleaner
-     */
-    public $databaseCleaner;
-
-    /**
-     * @var AbstractConnection
-     */
-    public $testConnection;
-
-    /**
-     * @var BaseTableSniffer
-     */
-    public $testSniffer;
-
-    public function setUp()
-    {
-        $this->databaseCleaner = new DatabaseCleaner(TestUtil::getConnectionManager());
-        $this->testConnection = $this->databaseCleaner->getSniffer('test')->getConnection();
-    }
-
-    public function tearDown()
-    {
-        unset($this->databaseCleaner);
-        unset($this->testConnection);
-    }
-
-    private function activateForeignKeysOnSqlite() {
-        if ($this->databaseCleaner->getConnectionManager()->getDriver('test') === DatabaseCleaner::SQLITE_DRIVER) {
-            $this->testConnection->execute('PRAGMA foreign_keys = ON;' );
-        }
-    }
-
     public function testDropWithForeignKeyCheckCities()
     {
         $this->activateForeignKeysOnSqlite();

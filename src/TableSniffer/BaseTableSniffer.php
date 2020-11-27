@@ -149,7 +149,7 @@ abstract class BaseTableSniffer
         $dirtyTable = TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR;
         $this->getConnection()->execute("
             CREATE TABLE IF NOT EXISTS {$dirtyTable} (
-            table_name VARCHAR(128) PRIMARY KEY
+                table_name VARCHAR(128) PRIMARY KEY
             );
         ");
     }
