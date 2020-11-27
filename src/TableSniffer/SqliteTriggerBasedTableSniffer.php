@@ -44,7 +44,7 @@ class SqliteTriggerBasedTableSniffer extends BaseTableSniffer implements Trigger
     {
         return $this->getConnection()->fetchList("
              SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';
-        ");
+        ", 'name');
     }
 
     /**
@@ -113,7 +113,7 @@ class SqliteTriggerBasedTableSniffer extends BaseTableSniffer implements Trigger
             FROM sqlite_master
             WHERE type = 'trigger'
             AND name LIKE '{$triggerPrefix}%'
-        ");
+        ", 'name');
 
         foreach ($triggers as $k => $trigger) {
             if (strpos($trigger, self::TRIGGER_PREFIX) !== 0) {

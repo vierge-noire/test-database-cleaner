@@ -39,6 +39,9 @@ class AbstractConnectionTest extends TestCase
         if ($this->isRunningOnCakePHP()) {
             $expect = 'test';
         }
+        if ($this->isRunningOnLaravel()) {
+            $expect = 'test';
+        }
         $this->assertSame($expect, $this->testConnection->getConnectionName());
     }
 
@@ -52,7 +55,7 @@ class AbstractConnectionTest extends TestCase
         foreach ($countries as $country) {
             $this->insert('countries', $country);
         }
-        $act = $this->testConnection->fetchList("SELECT name FROM countries");
+        $act = $this->testConnection->fetchList("SELECT name FROM countries", 'name');
         $this->assertSame($countries, $act);
     }
 }

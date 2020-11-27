@@ -150,7 +150,7 @@ class DatabaseCleaner
         try {
             $sniffer = new $snifferName($abstractConnection);
         } catch (\RuntimeException $e) {
-            $msg = "The DB table sniffer {$snifferName} is not supported or was not found";
+            $msg = $e->getMessage() . " The DB table sniffer {$snifferName} is not supported or was not found";
             throw new \RuntimeException($msg);
         }
 

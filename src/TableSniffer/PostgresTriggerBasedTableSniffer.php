@@ -21,7 +21,6 @@ class PostgresTriggerBasedTableSniffer extends BaseTableSniffer implements Trigg
      */
     public function truncateDirtyTables()
     {
-
         $this->getConnection()->execute('CALL TruncateDirtyTables();');
         $this->getConnection()->execute('TRUNCATE TABLE ' . self::DIRTY_TABLE_COLLECTOR . ' RESTART IDENTITY CASCADE;');
     }
@@ -35,7 +34,7 @@ class PostgresTriggerBasedTableSniffer extends BaseTableSniffer implements Trigg
             SELECT table_name
             FROM information_schema.tables
             WHERE table_schema = 'public'            
-        ");
+        ", 'table_name');
     }
 
     /**
@@ -141,7 +140,7 @@ class PostgresTriggerBasedTableSniffer extends BaseTableSniffer implements Trigg
             SELECT tgname
             FROM pg_trigger
             WHERE tgname LIKE '{$triggerPrefix}%'
-        ");
+        ", "tgname");
 
         foreach ($triggers as $k => $trigger) {
             if (strpos($trigger, self::TRIGGER_PREFIX) !== 0) {

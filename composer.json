@@ -19,11 +19,12 @@
         "phpunit/phpunit": "^6.1"
     },
     "require-dev": {
+        "ext-pdo": "*",
         "cakephp/datasource": "^4.0",
         "cakephp/migrations": "^3.0",
+        "illuminate/database": "9.x-dev",
         "josegonzalez/dotenv": "dev-master",
-        "phpstan/phpstan": "^0.12.48@dev",
-        "ext-pdo": "*"
+        "phpstan/phpstan": "^0.12.48@dev"
     },
     "autoload": {
         "psr-4": {

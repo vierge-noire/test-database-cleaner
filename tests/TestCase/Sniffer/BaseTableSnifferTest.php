@@ -16,7 +16,6 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\Sniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\MysqlTriggerBasedTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\TriggerBasedTableSnifferInterface;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class BaseTableSnifferTest extends TestCase
 {
@@ -33,14 +32,15 @@ class BaseTableSnifferTest extends TestCase
      */
     public function testGetSnifferOnNonExistentDB()
     {
-        $connectionName = 'test_dummy_connection';
-        TestUtil::createNonExistentConnection($connectionName);
-
         if ($this->driverIs('Sqlite')) {
             $this->assertTrue(true);
         } else {
-            $this->expectException(\RuntimeException::class);
+            $this->expectException(\Exception::class);
         }
+
+        $connectionName = 'test_dummy_connection';
+        $this->createNonExistentConnection($connectionName);
+
         $this->databaseCleaner->getSniffer($connectionName);
     }
 
@@ -60,12 +60,12 @@ class BaseTableSnifferTest extends TestCase
             'dirty_table_spy_countries',
         ];
         if ($this->driverIs('Mysql')) {
-            $found = $this->testConnection->fetchList('SHOW TRIGGERS');
+            $found = $this->testConnection->fetchList('SHOW TRIGGERS', 'Trigger');
         } elseif ($this->driverIs('Postgres')) {
-            $found = $this->testConnection->fetchList('SELECT tgname FROM pg_trigger');
+            $found = $this->testConnection->fetchList('SELECT tgname FROM pg_trigger', 'tgname');
             $expected[] = 'dirty_table_spy_' . TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR;
         } elseif ($this->driverIs('Sqlite')) {
-            $found = $this->testConnection->fetchList('SELECT name FROM sqlite_master WHERE type = "trigger"');
+            $found = $this->testConnection->fetchList('SELECT name FROM sqlite_master WHERE type = "trigger"', 'name');
             $expected[] = 'dirty_table_spy_' . TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR;
         }
 
@@ -97,7 +97,7 @@ class BaseTableSnifferTest extends TestCase
             TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR,
         ];
 
-        TestUtil::insertCountry($this->testConnection);
+        $this->insertCountry();
         $found = $this->testSniffer->getDirtyTables();
         $this->assertArraysHaveSameContent($expected, $found);
     }
@@ -126,17 +126,17 @@ class BaseTableSnifferTest extends TestCase
     public function testThatForeignKeysConstrainWorksOnDelete()
     {
         $this->expectException(\PDOException::class);
-        TestUtil::insertCity($this->testConnection);
+        $this->insertCity();
         $this->testConnection->execute('DELETE FROM countries');
     }
 
     public function testTruncateWithForeignKey()
     {
-        TestUtil::insertCity($this->testConnection);
+        $this->insertCity();
 
-        $this->testSniffer->truncateDirtyTables($this->testSniffer->getDirtyTables());
+        $this->testSniffer->truncateDirtyTables();
 
-        $count = (int)$this->testConnection->fetchList('select count(*) from cities, countries')[0];
+        $count = (int)$this->testConnection->fetchList('select count(*) as c from cities, countries', 'c')[0];
 
         $this->assertSame(0, $count);
     }

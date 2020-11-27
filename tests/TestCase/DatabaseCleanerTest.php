@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\Test\TestCase;
 
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class DatabaseCleanerTest extends TestCase
 {
@@ -39,11 +38,11 @@ class DatabaseCleanerTest extends TestCase
     public function testTruncateDirtyTables(int $i)
     {
         $countryName = 'Foo' . rand(1, 10000);
-        TestUtil::insertCountry($this->testConnection, $countryName);
+        $this->insertCountry($countryName);
 
-        $countries = $this->testConnection->fetchList("SELECT name from countries");
+        $countries = $this->testConnection->fetchList("SELECT name from countries", 'name');
         $this->assertSame([$countryName], $countries);
-        $cities = $this->testConnection->fetchList("SELECT name from cities");
+        $cities = $this->testConnection->fetchList("SELECT name from cities", 'name');
         $this->assertSame([], $cities);
     }
 }

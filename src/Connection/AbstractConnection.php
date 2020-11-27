@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Connection;
 
-
-use Cake\Database\Exception;
-
 abstract class AbstractConnection
 {
     /**
@@ -38,9 +35,10 @@ abstract class AbstractConnection
 
     /**
      * @param string $stmt
-     * @return mixed
+     * @param string $field
+     * @return array
      */
-    abstract public function fetch(string $stmt);
+    abstract public function fetchList(string $stmt, string $field): array;
 
     public function __construct(string $connectionName)
     {
@@ -53,29 +51,5 @@ abstract class AbstractConnection
     public function getConnectionName(): string
     {
         return $this->connectionName;
-    }
-
-    /**
-     * @param string $stmt
-     * @return array
-     */
-    public function fetchList(string $stmt): array
-    {
-        try {
-            $data = $this->fetch($stmt);
-            if ($data === false) {
-                throw new \Exception("Failing query: $stmt");
-            }
-        } catch (\Exception $e) {
-            $name = $this->getConnectionName();
-            var_dump($e->getMessage());
-            throw new Exception("Error in the connection '$name'.");
-        }
-
-        foreach ($data as $i => $val) {
-            $data[$i] = $val[0] ?? $val['name'];
-        }
-
-        return $data;
     }
 }

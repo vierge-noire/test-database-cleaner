@@ -15,9 +15,13 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\Test\Util;
 
 
+use Cake\Datasource\ConnectionManager;
+use Illuminate\Database\Capsule\Manager;
+use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
 use ViergeNoirePHPUnitListener\ConnectionManager\CakePHPConnectionManager;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
+use ViergeNoirePHPUnitListener\ConnectionManager\LaravelConnectionManager;
 use ViergeNoirePHPUnitListener\DatabaseCleaner;
 use ViergeNoirePHPUnitListener\TableSniffer\BaseTableSniffer;
 use ViergeNoirePHPUnitListener\Test\Traits\ArrayComparerTrait;
@@ -78,6 +82,11 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $this->testConnection->execute("INSERT INTO {$table} (name) VALUES ('{$name}');");
     }
 
+    public function insertCountry(string $name = 'Foo')
+    {
+        $this->insert('countries', $name);
+    }
+
     public function insertCity(string $name = 'FooCity')
     {
         $countryId = rand(1, 100000);
@@ -89,5 +98,72 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function isRunningOnCakePHP(): bool
     {
         return ($this->connectionManager instanceof CakePHPConnectionManager);
+    }
+
+    public function isRunningOnLaravel(): bool
+    {
+        return ($this->connectionManager instanceof LaravelConnectionManager);
+    }
+
+    public function runMigrations()
+    {
+//        if ($this->isRunningOnCakePHP()) {
+            return $this->runCakePHPMigrations();
+//        }
+    }
+
+    public function runCakePHPMigrations()
+    {
+        $config = [
+            'connection' => 'test',
+            'source' => 'TestMigrations',
+        ];
+
+        $migrations = new Migrations($config);
+        $migrations->migrate($config);
+
+        return $migrations;
+    }
+
+    public function rollbackMigrations($migrations)
+    {
+//        if ($this->isRunningOnCakePHP()) {
+            return $this->rollbackCakePHPMigrations($migrations);
+//        }
+    }
+
+    public function rollbackCakePHPMigrations(Migrations $migrations)
+    {
+        $migrations->rollback();
+    }
+
+    public function createNonExistentConnection(string $name)
+    {
+        if ($this->isRunningOnCakePHP()) {
+            return $this->createNonExistentCakePHPConnection($name);
+        }
+        if ($this->isRunningOnLaravel()) {
+            return $this->createNonExistentLaravelConnection($name);
+        }
+    }
+
+    public function createNonExistentCakePHPConnection(string $name)
+    {
+        $config = ConnectionManager::getConfig('test');
+        $config['database'] = 'dummy_database';
+        ConnectionManager::setConfig($name, $config);
+    }
+
+    public function createNonExistentLaravelConnection(string $name)
+    {
+        $baseConfig = [
+            "driver" => "mysql",
+            "host" =>"Mysql",
+            "database" => "dummy_database",
+            "username" => "root",
+            "password" => "root"
+        ];
+        $capsule = new Manager();
+        $capsule->addConnection($baseConfig);
     }
 }

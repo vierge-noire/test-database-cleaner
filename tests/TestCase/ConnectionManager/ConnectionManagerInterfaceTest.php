@@ -16,6 +16,7 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\ConnectionManager;
 
 
 use ViergeNoirePHPUnitListener\Connection\CakePHPConnection;
+use ViergeNoirePHPUnitListener\Connection\LaravelConnection;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 
 class ConnectionManagerInterfaceTest extends TestCase
@@ -24,6 +25,9 @@ class ConnectionManagerInterfaceTest extends TestCase
     {
         if ($this->isRunningOnCakePHP()) {
             $expect = CakePHPConnection::class;
+        }
+        if ($this->isRunningOnLaravel()) {
+            $expect = LaravelConnection::class;
         }
         $this->assertSame($expect, $this->connectionManager->getAbstractConnectionClassName());
     }

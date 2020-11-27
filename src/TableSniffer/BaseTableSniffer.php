@@ -83,7 +83,8 @@ abstract class BaseTableSniffer
     public function getDirtyTables(): array
     {
         return $this->getConnection()->fetchList(
-            "SELECT table_name FROM " . TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR
+            "SELECT table_name FROM " . TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR,
+            'table_name'
         );
     }
 

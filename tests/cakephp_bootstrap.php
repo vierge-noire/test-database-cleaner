@@ -16,6 +16,8 @@ use Cake\Datasource\ConnectionManager;
 use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
+define('FRAMEWORK', "CakePHP");
+
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
@@ -83,7 +85,7 @@ $dbConnection = [
 ];
 
 if (getenv('TABLE_SNIFFER')) {
-    $dbConnection['tableSniffer'] = getenv('TABLE_SNIFFER');
+    $dbConnection[ConnectionManagerInterface::SNIFFER_CONFIG_KEY] = getenv('TABLE_SNIFFER');
 }
 
 ConnectionManager::setConfig('default', $dbConnection);

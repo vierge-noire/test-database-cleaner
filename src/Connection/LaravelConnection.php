@@ -14,16 +14,14 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Connection;
 
-
 use Cake\Database\Exception;
-use Cake\Database\StatementInterface;
-use Cake\Datasource\ConnectionManager;
+use Illuminate\Database\Capsule\Manager;
 
-class CakePHPConnection extends AbstractConnection
+class LaravelConnection extends AbstractConnection
 {
-    public function execute(string $stmt): StatementInterface
+    public function execute(string $stmt): bool
     {
-        return ConnectionManager::get($this->getConnectionName())->execute($stmt);
+        return Manager::connection($this->getConnectionName())->unprepared($stmt);
     }
 
     /**
@@ -32,8 +30,9 @@ class CakePHPConnection extends AbstractConnection
     public function filterMigrationTables(array $tables): array
     {
         foreach ($tables as $i => $table) {
-            if (strpos($table, 'phinxlog') !== false) {
+            if ($table === 'phinxlog') {
                 unset($tables[$i]);
+                return $tables;
             }
         }
         return $tables;
@@ -45,10 +44,7 @@ class CakePHPConnection extends AbstractConnection
     public function fetchList(string $stmt, string $field): array
     {
         try {
-            $data = $this->execute($stmt)->fetchAll();
-            if ($data === false) {
-                throw new \Exception("Failing query: $stmt");
-            }
+            $data = Manager::connection($this->getConnectionName())->select($stmt);
         } catch (\Exception $e) {
             $name = $this->getConnectionName();
             var_dump($e->getMessage());
@@ -56,7 +52,7 @@ class CakePHPConnection extends AbstractConnection
         }
 
         foreach ($data as $i => $val) {
-            $data[$i] = $val[0] ?? $val['name'];
+            $data[$i] = $val->{$field};
         }
 
         return $data;

@@ -32,7 +32,7 @@ class MysqlTriggerBasedTableSniffer extends BaseTableSniffer implements TriggerB
             SELECT table_name
             FROM INFORMATION_SCHEMA.TABLES
             WHERE TABLE_SCHEMA = DATABASE();
-        ");
+        ", 'table_name');
     }
 
     /**
@@ -107,6 +107,7 @@ class MysqlTriggerBasedTableSniffer extends BaseTableSniffer implements TriggerB
         $dirtyTable = self::DIRTY_TABLE_COLLECTOR;
 
         // create truncate procedure
+        $this->getConnection()->execute("DROP PROCEDURE IF EXISTS TruncateDirtyTables;");
         $this->getConnection()->execute("
             DROP PROCEDURE IF EXISTS TruncateDirtyTables;
             CREATE PROCEDURE TruncateDirtyTables()
@@ -143,9 +144,7 @@ class MysqlTriggerBasedTableSniffer extends BaseTableSniffer implements TriggerB
      */
     public function getTriggers(): array
     {
-        $triggers = $this->getConnection()->fetchList("
-            SHOW triggers
-        ");
+        $triggers = $this->getConnection()->fetchList("SHOW triggers", 'Trigger');
 
         foreach ($triggers as $k => $trigger) {
             if (strpos($trigger, self::TRIGGER_PREFIX) !== 0) {

@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\Test\DropTablesTestCase;
 
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class TableSnifferDropCountriesTest extends TestCase
 {
     public function testDropWithForeignKeyCheckCities()
     {
         $this->activateForeignKeysOnSqlite();
-        TestUtil::insertCountry($this->testConnection);
+        $this->insertCountry();
         $this->databaseCleaner->dropTables('test');
 
-        $this->expectException(\PDOException::class);//
-        TestUtil::insertCountry($this->testConnection);
+        $this->expectException(\PDOException::class);
+        $this->insertCountry();
     }
 }

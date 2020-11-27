@@ -17,7 +17,6 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase;
 
 use ViergeNoirePHPUnitListener\SkipTablesTruncation;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class DatabaseCleanerWithoutTruncationTest extends TestCase
 {
@@ -46,9 +45,9 @@ class DatabaseCleanerWithoutTruncationTest extends TestCase
         }
 
         $countryName = "Foo$i";
-        TestUtil::insertCountry($this->testConnection, $countryName);
+        $this->insertCountry($countryName);
 
-        $countries = $this->testConnection->fetchList("SELECT name from countries");
+        $countries = $this->testConnection->fetchList("SELECT name from countries", 'name');
 
         $expected = [];
         for($k=0; $k <= $i; $k++) {
@@ -57,7 +56,7 @@ class DatabaseCleanerWithoutTruncationTest extends TestCase
 
         $this->assertSame($expected, $countries);
 
-        $cities = $this->testConnection->fetchList("SELECT name from cities");
+        $cities = $this->testConnection->fetchList("SELECT name from cities", 'name');
         $this->assertSame([], $cities);
     }
 }

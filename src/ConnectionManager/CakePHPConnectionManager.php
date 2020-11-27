@@ -64,13 +64,8 @@ class CakePHPConnectionManager implements ConnectionManagerInterface
 
     public function getConnectionSnifferClass(string $connectionName): string
     {
-        $snifferName = '';
         $config = ConnectionManager::getConfig($connectionName);
-
-        if (isset($config['tableSniffer'])) {
-            $snifferName = $config[self::SNIFFER_CONFIG_KEY];
-        }
-        return $snifferName;
+        return $config[self::SNIFFER_CONFIG_KEY] ?? '';
     }
 
     public function getDriver(string $connectionName): string

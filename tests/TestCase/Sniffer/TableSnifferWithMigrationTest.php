@@ -16,7 +16,6 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\Sniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\MysqlTriggerBasedTableSniffer;
 use ViergeNoirePHPUnitListener\TableSniffer\TriggerBasedTableSnifferInterface;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class TableSnifferWithMigrationTest extends TestCase
 {
@@ -25,21 +24,22 @@ class TableSnifferWithMigrationTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->migrations = TestUtil::runMigrations();
+        $this->migrations = $this->runMigrations();
     }
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
-        TestUtil::rollbackMigrations($this->migrations);
-        TestUtil::rollbackMigrations($this->migrations);
+        $this->rollbackMigrations($this->migrations);
+        $this->rollbackMigrations($this->migrations);
         unset($this->migrations);
+
+        // Parent Tear down as last!!!
+        parent::tearDown();
     }
 
     protected function countProducts(): int
     {
-        return (int) $nProducts = $this->testConnection->fetchList("SELECT COUNT(*) FROM products")[0];
+        return (int) $nProducts = $this->testConnection->fetchList("SELECT COUNT(*) as c FROM products", 'c')[0];
     }
 
     /**
@@ -61,7 +61,7 @@ class TableSnifferWithMigrationTest extends TestCase
         $this->assertTrue(in_array('products', $tables));
 
         // Rollback the table products population migration
-        TestUtil::rollbackMigrations($this->migrations);
+        $this->rollbackMigrations($this->migrations);
 
         $expected = [
             'dirty_table_spy_countries',
@@ -79,7 +79,7 @@ class TableSnifferWithMigrationTest extends TestCase
         $nProducts = $this->countProducts();
 
         // Populate the products table
-        TestUtil::runMigrations();
+        $this->runMigrations();
 
         $this->assertArraysHaveSameContent($expected, $this->testSniffer->getTriggers());
 
