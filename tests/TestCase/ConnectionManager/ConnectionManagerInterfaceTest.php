@@ -16,7 +16,6 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\ConnectionManager;
 
 
 use ViergeNoirePHPUnitListener\Connection\CakePHPConnection;
-use ViergeNoirePHPUnitListener\TableSniffer\MysqlTriggerBasedTableSniffer;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
 
 class ConnectionManagerInterfaceTest extends TestCase

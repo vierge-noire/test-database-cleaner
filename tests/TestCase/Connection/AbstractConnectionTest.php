@@ -16,7 +16,6 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\Connection;
 
 
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
-use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class AbstractConnectionTest extends TestCase
 {
