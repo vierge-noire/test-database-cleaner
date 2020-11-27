@@ -78,7 +78,7 @@ class SqliteTriggerBasedTableSniffer extends BaseTableSniffer implements Trigger
         $triggerPrefix = self::TRIGGER_PREFIX;
 
         $stmts = [];
-        foreach ($this->getAllTablesExceptPhinxlogs() as $table) {
+        foreach ($this->getAllTablesExceptMigrations() as $table) {
             $stmts[] = "
             CREATE TRIGGER {$triggerPrefix}{$table} AFTER INSERT ON `$table` 
                 BEGIN

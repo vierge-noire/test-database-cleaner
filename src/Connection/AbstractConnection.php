@@ -31,6 +31,12 @@ abstract class AbstractConnection
     abstract public function execute(string $stmt);
 
     /**
+     * @param array $tables
+     * @return array
+     */
+    abstract public function filterMigrationTables(array $tables): array;
+
+    /**
      * @param string $stmt
      * @return mixed
      */

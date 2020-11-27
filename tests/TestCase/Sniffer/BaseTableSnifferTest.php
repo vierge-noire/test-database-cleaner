@@ -76,7 +76,7 @@ class BaseTableSnifferTest extends TestCase
 
     public function testGetAllTablesExceptPhinxlogs()
     {
-        $found = $this->testSniffer->getAllTablesExceptPhinxlogs();
+        $found = $this->testSniffer->getAllTablesExceptMigrations();
         $expected = [
             'cities',
             'countries',

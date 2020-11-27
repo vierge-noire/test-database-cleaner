@@ -16,6 +16,8 @@ namespace ViergeNoirePHPUnitListener\Test\Util;
 
 
 use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
+use ViergeNoirePHPUnitListener\ConnectionManager\CakePHPConnectionManager;
+use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 use ViergeNoirePHPUnitListener\DatabaseCleaner;
 use ViergeNoirePHPUnitListener\TableSniffer\BaseTableSniffer;
 use ViergeNoirePHPUnitListener\Test\Traits\ArrayComparerTrait;
@@ -30,6 +32,11 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public $databaseCleaner;
 
     /**
+     * @var ConnectionManagerInterface
+     */
+    public $connectionManager;
+
+    /**
      * @var AbstractConnection
      */
     public $testConnection;
@@ -41,25 +48,27 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->databaseCleaner  = new DatabaseCleaner(TestUtil::getConnectionManager());
-        $this->testSniffer      = $this->databaseCleaner->getSniffer('test');
-        $this->testConnection   = $this->testSniffer->getConnection();
+        $this->databaseCleaner      = new DatabaseCleaner(TestUtil::getConnectionManager());
+        $this->connectionManager    = $this->databaseCleaner->getConnectionManager();
+        $this->testSniffer          = $this->databaseCleaner->getSniffer('test');
+        $this->testConnection       = $this->testSniffer->getConnection();
     }
 
     public function tearDown()
     {
         unset($this->databaseCleaner);
+        unset($this->connectionManager);
         unset($this->testSniffer);
         unset($this->testConnection);
     }
 
     public function driverIs(string $driver): bool
     {
-        return $this->databaseCleaner->getConnectionManager()->getDriver('test') === $driver;
+        return $this->connectionManager->getDriver('test') === $driver;
     }
 
     public function activateForeignKeysOnSqlite() {
-        if ($this->databaseCleaner->getConnectionManager()->getDriver('test') === DatabaseCleaner::SQLITE_DRIVER) {
+        if ($this->connectionManager->getDriver('test') === DatabaseCleaner::SQLITE_DRIVER) {
             $this->testConnection->execute('PRAGMA foreign_keys = ON;' );
         }
     }
@@ -75,5 +84,10 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $countryName = $name . 'Country';
         $this->testConnection->execute("INSERT INTO countries (id, name) VALUES ('{$countryId}', '{$countryName}');");
         $this->testConnection->execute("INSERT INTO cities (name, country_id) VALUES ('{$name}', '{$countryId}');");
+    }
+
+    public function isRunningOnCakePHP(): bool
+    {
+        return ($this->connectionManager instanceof CakePHPConnectionManager);
     }
 }

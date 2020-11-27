@@ -69,7 +69,7 @@ class PostgresTriggerBasedTableSniffer extends BaseTableSniffer implements Trigg
         $triggerPrefix = self::TRIGGER_PREFIX;
 
         $stmts = [];
-        foreach ($this->getAllTablesExceptPhinxlogs() as $table) {
+        foreach ($this->getAllTablesExceptMigrations() as $table) {
             $stmts[] = "
                 CREATE OR REPLACE FUNCTION mark_table_{$table}_as_dirty() RETURNS TRIGGER LANGUAGE PLPGSQL AS $$
                 DECLARE

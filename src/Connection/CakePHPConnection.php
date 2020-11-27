@@ -33,4 +33,17 @@ class CakePHPConnection extends AbstractConnection
     {
         return $this->execute($stm)->fetchAll();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function filterMigrationTables(array $tables): array
+    {
+        foreach ($tables as $i => $table) {
+            if (strpos($table, 'phinxlog') !== false) {
+                unset($tables[$i]);
+            }
+        }
+        return $tables;
+    }
 }

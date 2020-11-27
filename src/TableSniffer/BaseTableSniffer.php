@@ -113,19 +113,15 @@ abstract class BaseTableSniffer
     }
 
     /**
-     * Get all tables except the phinx tables
+     * Get all tables except the migration table(s)
      * * @param bool $forceFetch
      * @return array
      */
-    public function getAllTablesExceptPhinxlogs(bool $forceFetch = false): array
+    public function getAllTablesExceptMigrations(bool $forceFetch = false): array
     {
-        $allTables = $this->getAllTables($forceFetch);
-        foreach ($allTables as $i => $table) {
-            if (strpos($table, 'phinxlog') !== false) {
-                unset($allTables[$i]);
-            }
-        }
-        return $allTables;
+        return $this->getConnection()->filterMigrationTables(
+            $this->getAllTables($forceFetch)
+        );
     }
 
     /**
