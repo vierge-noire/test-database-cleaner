@@ -19,7 +19,7 @@
         "phpunit/phpunit": "^6.1"
     },
     "require-dev": {
-        "cakephp/cakephp": "^4.0",
+        "cakephp/datasource": "^4.0",
         "cakephp/migrations": "^3.0",
         "josegonzalez/dotenv": "dev-master",
         "phpstan/phpstan": "^0.12.48@dev",

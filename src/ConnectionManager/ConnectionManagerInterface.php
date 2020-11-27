@@ -26,12 +26,19 @@ interface ConnectionManagerInterface
 
     public function getConnectionSnifferClass(string $connectionName): string;
 
+    /**
+     * The name of the driver used. These should be
+     *
+     * @param string $connectionName
+     * @return string
+     */
     public function getDriver(string $connectionName): string;
 
     public function getTestConnections(): array;
 
     /**
      * Framework specific task to perform before the test suite starts
+     * It is allowed to perform nothing.
      */
     public function initialize(): void;
 }

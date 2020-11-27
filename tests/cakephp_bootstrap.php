@@ -34,8 +34,6 @@ define('TEST_APP', CORE_TESTS . 'TestApp' . DS);
 // Point app constants to the test app.
 define('CONFIG', TEST_APP . 'config' . DS);
 
-require_once CORE_PATH . 'config/bootstrap.php';
-
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 

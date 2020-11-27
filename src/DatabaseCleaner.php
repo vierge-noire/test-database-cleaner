@@ -37,9 +37,9 @@ class DatabaseCleaner
      */
     private $sniffers = [];
 
-    const MYSQL_DRIVER                  = 'Mysql';
-    const SQLITE_DRIVER                 = 'Sqlite';
-    const POSTGRES_DRIVER               = 'Postgres';
+    const MYSQL_DRIVER    = 'Mysql';
+    const SQLITE_DRIVER   = 'Sqlite';
+    const POSTGRES_DRIVER = 'Postgres';
 
     public function __construct(ConnectionManagerInterface $connectionManager)
     {
