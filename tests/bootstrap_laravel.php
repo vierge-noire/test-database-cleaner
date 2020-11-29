@@ -19,15 +19,22 @@ use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
 putenv('FRAMEWORK=Laravel');
 
-$capsule = new Capsule;
+require_once 'tests/bootstap.php';
+
+$driver = strtolower(getenv('DB_DRIVER'));
+if ($driver === 'postgres') {
+    $driver = 'pgsql';
+}
 
 $baseConfig = [
-    "driver" => "mysql",
-    "host" =>"Mysql",
-    "database" => "test_phpunit_listener",
-    "username" => "root",
-    "password" => "root"
+    "driver" => $driver,
+    "host" => getenv('DB_HOST'),
+    "database" => getenv('DB_DATABASE'),
+    "username" => getenv('DB_USER'),
+    "password" => getenv('DB_PWD'),
 ];
+
+$capsule = new Capsule;
 $capsule->addConnection($baseConfig, 'test');
 
 $dummyConnection = $baseConfig;

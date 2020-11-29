@@ -18,10 +18,8 @@ use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
 putenv('FRAMEWORK=CakePHP');
 
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-define('ROOT', dirname(__DIR__));
+require_once 'tests/bootstap.php';
+
 define('APP_DIR', 'src');
 define('APP_PATH', ROOT . DS . 'TestApp' . DS);
 define('VENDOR_PATH', ROOT . DS . 'vendor' . DS);
@@ -39,37 +37,9 @@ define('CONFIG', TEST_APP . 'config' . DS);
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 
-$loadEnv = function(string $fileName) {
-    if (file_exists($fileName)) {
-        $dotenv = new \josegonzalez\Dotenv\Loader($fileName);
-        $dotenv->parse()
-            ->putenv(true)
-            ->toEnv(true)
-            ->toServer(true);
-    }
-};
-
-if (!getenv('DB_DRIVER')) {
-    putenv('DB_DRIVER=Sqlite');
-}
-$driver =  getenv('DB_DRIVER');
-
-if (!file_exists(ROOT . DS . '.env')) {
-    @copy(".env.$driver", ROOT . DS . '.env');
-}
-
-/**
- * Read .env file(s).
- */
-$loadEnv(ROOT . DS . '.env');
-
-// Re-read the driver
-$driver =  getenv('DB_DRIVER');
-echo "Using driver $driver \n";
-
 $dbConnection = [
     'className' => 'Cake\Database\Connection',
-    'driver' => 'Cake\Database\Driver\\' . $driver,
+    'driver' => 'Cake\Database\Driver\\' . getenv('DB_DRIVER'),
     'persistent' => false,
     'host' => getenv('DB_HOST'),
     'username' => getenv('DB_USER'),
