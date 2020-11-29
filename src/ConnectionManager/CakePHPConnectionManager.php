@@ -33,10 +33,10 @@ class CakePHPConnectionManager implements ConnectionManagerInterface
 
     public function getTestConnections(): array
     {
-        $connections = ConnectionManager::configured();
-        foreach ($connections as $i => $connectionName) {
-            if ($this->skipConnection($connectionName)) {
-                unset($connections[$i]);
+        $connections = [];
+        foreach (ConnectionManager::configured() as $i => $connectionName) {
+            if (!$this->skipConnection($connectionName)) {
+                $connections[] = $connectionName;
             }
         }
         return $connections;

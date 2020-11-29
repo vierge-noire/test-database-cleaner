@@ -48,7 +48,7 @@ abstract class AbstractConnection
     /**
      * @return string
      */
-    public function getConnectionName(): string
+    final public function getConnectionName(): string
     {
         return $this->connectionName;
     }

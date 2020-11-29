@@ -14,13 +14,14 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Connection;
 
+use Cake\Database\Exception;
 use Illuminate\Database\Capsule\Manager;
 
-class LaravelConnection extends AbstractConnection
+class SymfonyConnection extends AbstractConnection
 {
     public function execute(string $stmt): bool
     {
-        return Manager::connection($this->getConnectionName())->unprepared($stmt);
+        return true;
     }
 
     /**
@@ -29,7 +30,7 @@ class LaravelConnection extends AbstractConnection
     public function filterMigrationTables(array $tables): array
     {
         foreach ($tables as $i => $table) {
-            // TODO: Use 'migrations'
+            // TODO: Use 'migration_versions'
             if ($table === 'phinxlog') {
                 unset($tables[$i]);
                 return $tables;
@@ -48,7 +49,7 @@ class LaravelConnection extends AbstractConnection
         } catch (\Exception $e) {
             $name = $this->getConnectionName();
             var_dump($e->getMessage());
-            throw new \Exception("Error with the connection '$name'.");
+            throw new Exception("Error in the connection '$name'.");
         }
 
         foreach ($data as $i => $val) {

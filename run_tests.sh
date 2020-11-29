@@ -17,4 +17,8 @@ export DB_DRIVER=$DRIVER
 ./vendor/bin/phpunit --testsuite DropCities -c phpunit.laravel.xml
 ./vendor/bin/phpunit --testsuite DropCountries -c phpunit.laravel.xml
 
+#./vendor/bin/phpunit --testsuite Default -c phpunit.symfony.xml
+#./vendor/bin/phpunit --testsuite DropCities -c phpunit.symfony.xml
+#./vendor/bin/phpunit --testsuite DropCountries -c phpunit.symfony.xml
+
 ./vendor/bin/phpstan analyse --memory-limit=-1

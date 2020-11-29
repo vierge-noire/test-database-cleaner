@@ -3,7 +3,7 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
-    bootstrap="./tests/cakephp_bootstrap.php"
+    bootstrap="./tests/bootstrap_cakephp.php"
 >
     <php>
         <ini name="memory_limit" value="-1"/>

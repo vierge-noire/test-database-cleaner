@@ -12,40 +12,40 @@ declare(strict_types=1);
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-
-
-define('FRAMEWORK', "Laravel");
-
 require_once "vendor/autoload.php";
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
-$capsule = new Capsule;
+putenv('FRAMEWORK=Symfony');
 
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+
+$paths = array("/path/to/entity-files");
+$isDevMode = false;
+
+// the connection configuration
 $baseConfig = [
-    "driver" => "mysql",
-    "host" =>"Mysql",
-    "database" => "test_phpunit_listener",
-    "username" => "root",
-    "password" => "root"
+    'driver' => 'pdo_mysql',
+    'user' => 'root',
+    'password' => 'root',
+    'dbname' => 'test_phpunit_listener',
 ];
-$capsule->addConnection($baseConfig, 'test');
 
-$dummyConnection = $baseConfig;
-$dummyConnection['driver'] = 'mysql';
-$dummyConnection[ConnectionManagerInterface::SKIP_CONNECTION_CONFIG_KEY] = true;
-$capsule->addConnection($dummyConnection, 'test_dummy');
+$config = Setup::createAnnotationMetadataConfiguration($paths, true);
+$entityManager = EntityManager::create($baseConfig, $config);
 
-//Make this Capsule instance available globally.
-$capsule->setAsGlobal();
 
-// Setup the Eloquent ORM.
-$capsule->bootEloquent();
+//$baseConfig = [
+//    "driver" => "mysql",
+//    "host" =>"Mysql",
+//    "database" => "test_phpunit_listener",
+//    "username" => "root",
+//    "password" => "root"
+//];
 
-$capsule->bootEloquent();
 
-require_once "tests/cakephp_bootstrap.php";
+require_once "tests/bootstrap_cakephp.php";
 
 
 //\Illuminate\Support\Facades\Artisan::call('migrate', array('--path' => 'tests/TestApp/config/Migrations', '--force' => true));

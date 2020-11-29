@@ -16,7 +16,7 @@ use Cake\Datasource\ConnectionManager;
 use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
-define('FRAMEWORK', "CakePHP");
+putenv('FRAMEWORK=CakePHP');
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);

@@ -3,7 +3,7 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
-    bootstrap="./tests/bootstrap_laravel.php"
+    bootstrap="./tests/bootstrap_symfony.php"
 >
     <php>
         <ini name="memory_limit" value="-1"/>
@@ -27,7 +27,7 @@
     <listeners>
         <listener class="ViergeNoirePHPUnitListener\PHPUnitListener">
             <arguments>
-                <object class="ViergeNoirePHPUnitListener\ConnectionManager\LaravelConnectionManager" />
+                <object class="ViergeNoirePHPUnitListener\ConnectionManager\SymfonyConnectionManager" />
             </arguments>
         </listener>
     </listeners>

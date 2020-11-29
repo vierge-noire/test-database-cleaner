@@ -14,12 +14,7 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\ConnectionManager;
 
-
-use Cake\Core\Configure;
-use Cake\Datasource\ConnectionManager;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Support\Facades\Config;
-use ViergeNoirePHPUnitListener\Connection\CakePHPConnection;
 use ViergeNoirePHPUnitListener\Connection\LaravelConnection;
 use ViergeNoirePHPUnitListener\DatabaseCleaner;
 

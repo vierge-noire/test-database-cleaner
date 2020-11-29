@@ -14,16 +14,13 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Test\Util;
 
-
-use Cake\Datasource\ConnectionManager;
-use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
 class TestUtil
 {
     static public function getConnectionManager(): ConnectionManagerInterface
     {
-        $managerName = 'ViergeNoirePHPUnitListener\ConnectionManager\\' .  FRAMEWORK . 'ConnectionManager';
+        $managerName = 'ViergeNoirePHPUnitListener\ConnectionManager\\' .  getenv('FRAMEWORK') . 'ConnectionManager';
 
         return new $managerName();
     }

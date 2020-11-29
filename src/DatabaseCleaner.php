@@ -95,13 +95,7 @@ class DatabaseCleaner
      */
     protected function fetchActiveConnections(): array
     {
-        $connections = [];
-        foreach ($this->getConnectionManager()->getTestConnections() as $connectionName) {
-            if (!$this->getConnectionManager()->skipConnection($connectionName)) {
-                $connections[] = $connectionName;
-            }
-        }
-        return $this->activeConnections = $connections;
+        return $this->activeConnections = $this->getConnectionManager()->getTestConnections();
     }
 
     /**
