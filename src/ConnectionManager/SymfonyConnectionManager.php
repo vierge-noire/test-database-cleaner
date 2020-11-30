@@ -15,11 +15,6 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\ConnectionManager;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
-use Illuminate\Database\Capsule\Manager;
 use ViergeNoirePHPUnitListener\Connection\SymfonyConnection;
 use ViergeNoirePHPUnitListener\DatabaseCleaner;
 
@@ -32,13 +27,13 @@ class SymfonyConnectionManager implements ConnectionManagerInterface
 
     public function initialize(): void
     {
-        $baseConfig = [
-            'driver' => 'pdo_mysql',
-            'user' => 'root',
-            'password' => 'root',
-            'dbname' => 'test_phpunit_listener',
-            self::SKIP_CONNECTION_CONFIG_KEY => false,
-        ];
+//        $baseConfig = [
+//            'driver' => 'pdo_mysql',
+//            'user' => 'root',
+//            'password' => 'root',
+//            'dbname' => 'test_phpunit_listener',
+//            self::SKIP_CONNECTION_CONFIG_KEY => false,
+//        ];
 
 
 //        $this->em = DriverManager::getConnection($baseConfig);
@@ -64,10 +59,13 @@ class SymfonyConnectionManager implements ConnectionManagerInterface
         ];
     }
 
-    public function skipConnection(string $connectionName): bool
+    public function skipConnection(array $params): bool
     {
-        $ignoreConnection = $this->em->getParams()[self::SKIP_CONNECTION_CONFIG_KEY] ?? false;
-        return $ignoreConnection === true;
+        if (isset($params[self::SNIFFER_CONFIG_KEY])) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function getConnectionSnifferClass(string $connectionName): string

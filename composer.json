@@ -23,8 +23,8 @@
         "cakephp/datasource": "^4.0",
         "cakephp/migrations": "^3.0",
         "doctrine/orm": "*",
-        "illuminate/database": "9.x-dev",
         "josegonzalez/dotenv": "dev-master",
+        "laravel/laravel": "9999999-dev",
         "phpstan/phpstan": "^0.12.48@dev"
     },
     "autoload": {
@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TestApp\\": "tests/TestApp/src",
+            "CakePHPTestApp\\": "tests/Util/cakephp_app/src",
             "ViergeNoirePHPUnitListener\\Test\\": "tests"
         }
     },

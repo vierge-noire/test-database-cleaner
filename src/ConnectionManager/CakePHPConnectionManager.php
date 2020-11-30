@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\ConnectionManager;
 
 
-use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use ViergeNoirePHPUnitListener\Connection\CakePHPConnection;
 
@@ -35,37 +34,25 @@ class CakePHPConnectionManager implements ConnectionManagerInterface
     {
         $connections = [];
         foreach (ConnectionManager::configured() as $i => $connectionName) {
-            if (!$this->skipConnection($connectionName)) {
+            if (!$this->skipConnection(ConnectionManager::getConfig($connectionName))) {
                 $connections[] = $connectionName;
             }
         }
         return $connections;
     }
 
-    public function skipConnection(string $connectionName): bool
+    public function skipConnection(array $params): bool
     {
-        $ignoredConnections = Configure::read('PHPUnitIgnoredConnections', []);
-        // CakePHP 4 solves a DebugKit issue by creating an Sqlite connection
-        // in tests/bootstrap.php. This connection should be ignored.
-        if ($connectionName === 'test_debug_kit' || in_array($connectionName, $ignoredConnections)) {
-            return true;
-        }
-
-        if ((ConnectionManager::getConfig($connectionName)[self::SKIP_CONNECTION_CONFIG_KEY] ?? false) === true) {
-            return true;
-        }
-
-        if ($connectionName === 'test' || strpos($connectionName, 'test_') === 0) {
+        if (isset($params[self::SNIFFER_CONFIG_KEY])) {
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     public function getConnectionSnifferClass(string $connectionName): string
     {
-        $config = ConnectionManager::getConfig($connectionName);
-        return $config[self::SNIFFER_CONFIG_KEY] ?? '';
+        return ConnectionManager::getConfig($connectionName)[self::SNIFFER_CONFIG_KEY] ?? '';
     }
 
     public function getDriver(string $connectionName): string

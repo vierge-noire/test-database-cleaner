@@ -17,12 +17,11 @@ namespace ViergeNoirePHPUnitListener\ConnectionManager;
 
 interface ConnectionManagerInterface
 {
-    const SKIP_CONNECTION_CONFIG_KEY = 'skipInTestSuite';
-    const SNIFFER_CONFIG_KEY         = 'tableSniffer';
+    const SNIFFER_CONFIG_KEY = 'tableSniffer';
 
     public function getAbstractConnectionClassName(): string;
 
-    public function skipConnection(string $connectionName): bool;
+    public function skipConnection(array $params): bool;
 
     public function getConnectionSnifferClass(string $connectionName): string;
 
@@ -34,6 +33,10 @@ interface ConnectionManagerInterface
      */
     public function getDriver(string $connectionName): string;
 
+    /**
+     * Get the list of all connections that are candidates for being truncated
+     * @return array
+     */
     public function getTestConnections(): array;
 
     /**

@@ -22,7 +22,7 @@ class DatabaseCleanerTest extends TestCase
     public function testGetActiveConnections()
     {
         $this->assertSame(
-            ['test'],
+            [$this->testConnectionName],
             $this->databaseCleaner->getActiveConnections()
         );
     }

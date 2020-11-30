@@ -17,7 +17,9 @@ namespace ViergeNoirePHPUnitListener\Test\TestCase\ConnectionManager;
 
 use ViergeNoirePHPUnitListener\Connection\CakePHPConnection;
 use ViergeNoirePHPUnitListener\Connection\LaravelConnection;
+use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 use ViergeNoirePHPUnitListener\Test\Util\TestCase;
+use ViergeNoirePHPUnitListener\Test\Util\TestUtil;
 
 class ConnectionManagerInterfaceTest extends TestCase
 {
@@ -34,24 +36,28 @@ class ConnectionManagerInterfaceTest extends TestCase
 
     public function testSkipConnection()
     {
-        $this->assertSame(false, $this->connectionManager->skipConnection('test'));
-        $this->assertSame(true, $this->connectionManager->skipConnection('test_dummy'));
+        $this->assertSame(false, $this->connectionManager->skipConnection([
+            ConnectionManagerInterface::SNIFFER_CONFIG_KEY => true,
+        ]));
+        $this->assertSame(true, $this->connectionManager->skipConnection([
+            'random_key' => true,
+        ]));
     }
 
     public function testGetConnectionSnifferClass()
     {
-        $this->assertSame('', $this->connectionManager->getConnectionSnifferClass('test'));
+        $this->assertSame(TestUtil::getSnifferClassName(), $this->connectionManager->getConnectionSnifferClass($this->testConnectionName));
     }
 
     public function testGetDriver()
     {
         $expect =  getenv('DB_DRIVER');
-        $this->assertSame($expect, $this->connectionManager->getDriver('test'));
+        $this->assertSame($expect, $this->connectionManager->getDriver($this->testConnectionName));
     }
 
     public function testGetTestConnections()
     {
-        $expect =  ['test'];
+        $expect =  [$this->testConnectionName];
         $this->assertArraysHaveSameContent($expect, $this->connectionManager->getTestConnections());
     }
 }

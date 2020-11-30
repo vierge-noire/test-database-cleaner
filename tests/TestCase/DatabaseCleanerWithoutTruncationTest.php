@@ -22,14 +22,6 @@ class DatabaseCleanerWithoutTruncationTest extends TestCase
 {
     use SkipTablesTruncation;
 
-    public function testGetActiveConnections()
-    {
-        $this->assertSame(
-            ['test'],
-            $this->databaseCleaner->getActiveConnections()
-        );
-    }
-
     public function iterator()
     {
         return [[0], [1], [2]];

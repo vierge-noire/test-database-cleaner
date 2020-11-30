@@ -21,7 +21,7 @@ class TableSnifferDropCountriesTest extends TestCase
     {
         $this->activateForeignKeysOnSqlite();
         $this->insertCountry();
-        $this->databaseCleaner->dropTables('test');
+        $this->databaseCleaner->dropTables('default');
 
         $this->expectException(\PDOException::class);
         $this->insertCountry();

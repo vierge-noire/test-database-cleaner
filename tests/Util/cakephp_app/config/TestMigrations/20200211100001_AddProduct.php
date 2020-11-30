@@ -16,15 +16,12 @@ use Migrations\AbstractMigration;
 
 class AddProduct extends AbstractMigration
 {
-
-    const PRODUCT_NAME = 'Test Suite Light';
-
     public function up()
     {
         $table = $this->table('products');
         $table
             ->insert([
-                'name' => self::PRODUCT_NAME
+                'name' => 'Test Suite Light'
             ])
             ->save();
     }

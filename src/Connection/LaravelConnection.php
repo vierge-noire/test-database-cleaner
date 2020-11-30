@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\Connection;
 
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Facades\Config;
 
 class LaravelConnection extends AbstractConnection
 {
@@ -28,9 +29,9 @@ class LaravelConnection extends AbstractConnection
      */
     public function filterMigrationTables(array $tables): array
     {
+        $migrationTable = Config::get('database.migrations');
         foreach ($tables as $i => $table) {
-            // TODO: Use 'migrations'
-            if ($table === 'phinxlog') {
+            if ($table === $migrationTable) {
                 unset($tables[$i]);
                 return $tables;
             }

@@ -18,11 +18,17 @@ use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
 class TestUtil
 {
-    static public function getConnectionManager(): ConnectionManagerInterface
+    public static function getConnectionManager(): ConnectionManagerInterface
     {
         $managerName = 'ViergeNoirePHPUnitListener\ConnectionManager\\' .  getenv('FRAMEWORK') . 'ConnectionManager';
 
         return new $managerName();
+    }
+
+    public static function getSnifferClassName()
+    {
+        $driver = getenv('DB_DRIVER');
+        return "\ViergeNoirePHPUnitListener\TableSniffer\\".$driver ."TriggerBasedTableSniffer";
     }
 
     public static function makeUuid(): string

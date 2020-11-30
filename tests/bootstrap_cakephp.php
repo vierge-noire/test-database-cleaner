@@ -16,7 +16,9 @@ use Cake\Datasource\ConnectionManager;
 use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
-putenv('FRAMEWORK=CakePHP');
+if (!getenv('FRAMEWORK')) {
+    putenv('FRAMEWORK=CakePHP');
+}
 
 require_once 'tests/bootstap.php';
 
@@ -29,7 +31,7 @@ define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 define('CORE_TESTS', ROOT . DS . 'tests' . DS);
 define('CORE_TEST_CASES', CORE_TESTS . 'TestCase');
-define('TEST_APP', CORE_TESTS . 'TestApp' . DS);
+define('TEST_APP', CORE_TESTS . 'Util' . DS . 'cakephp_app' . DS);
 
 // Point app constants to the test app.
 define('CONFIG', TEST_APP . 'config' . DS);
@@ -50,22 +52,19 @@ $dbConnection = [
     'cacheMetadata' => true,
     'quoteIdentifiers' => true,
     'log' => false,
-    //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-    'url' => env('DATABASE_TEST_URL', null),
 ];
-
-if (getenv('TABLE_SNIFFER')) {
-    $dbConnection[ConnectionManagerInterface::SNIFFER_CONFIG_KEY] = getenv('TABLE_SNIFFER');
-}
-
-ConnectionManager::setConfig('default', $dbConnection);
-ConnectionManager::setConfig('test', $dbConnection);
 
 // This connection is meant to be ignored
 $dummyConnection = $dbConnection;
 $dummyConnection['driver'] = 'Foo';
-$dummyConnection[ConnectionManagerInterface::SKIP_CONNECTION_CONFIG_KEY] = true;
 ConnectionManager::setConfig('test_dummy', $dummyConnection);
+
+// Create the default connection, to be ignored too
+ConnectionManager::setConfig('default', $dbConnection);
+
+// Set the sniffer, indicating that the connection should be truncated and how
+$dbConnection[ConnectionManagerInterface::SNIFFER_CONFIG_KEY] = \ViergeNoirePHPUnitListener\Test\Util\TestUtil::getSnifferClassName();
+ConnectionManager::setConfig('test', $dbConnection);
 
 $migrations = new Migrations(['connection' => 'test']);
 $migrations->migrate();

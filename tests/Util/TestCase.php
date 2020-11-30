@@ -17,6 +17,7 @@ namespace ViergeNoirePHPUnitListener\Test\Util;
 
 use Cake\Datasource\ConnectionManager;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Facades\Artisan;
 use Migrations\Migrations;
 use ViergeNoirePHPUnitListener\Connection\AbstractConnection;
 use ViergeNoirePHPUnitListener\ConnectionManager\CakePHPConnectionManager;
@@ -50,11 +51,17 @@ class TestCase extends \PHPUnit\Framework\TestCase
      */
     public $testSniffer;
 
+    /**
+     * @var string
+     */
+    public $testConnectionName;
+
     public function setUp()
     {
         $this->databaseCleaner      = new DatabaseCleaner(TestUtil::getConnectionManager());
         $this->connectionManager    = $this->databaseCleaner->getConnectionManager();
-        $this->testSniffer          = $this->databaseCleaner->getSniffer('test');
+        $this->testConnectionName   = $this->isRunningOnCakePHP() ? 'test' : 'default';
+        $this->testSniffer          = $this->databaseCleaner->getSniffer($this->testConnectionName);
         $this->testConnection       = $this->testSniffer->getConnection();
     }
 
@@ -62,17 +69,18 @@ class TestCase extends \PHPUnit\Framework\TestCase
     {
         unset($this->databaseCleaner);
         unset($this->connectionManager);
+        unset($this->testConnectionName);
         unset($this->testSniffer);
         unset($this->testConnection);
     }
 
     public function driverIs(string $driver): bool
     {
-        return $this->connectionManager->getDriver('test') === $driver;
+        return $this->connectionManager->getDriver($this->testConnectionName) === $driver;
     }
 
     public function activateForeignKeysOnSqlite() {
-        if ($this->connectionManager->getDriver('test') === DatabaseCleaner::SQLITE_DRIVER) {
+        if ($this->connectionManager->getDriver($this->testConnectionName) === DatabaseCleaner::SQLITE_DRIVER) {
             $this->testConnection->execute('PRAGMA foreign_keys = ON;' );
         }
     }
@@ -107,9 +115,12 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     public function runMigrations()
     {
-//        if ($this->isRunningOnCakePHP()) {
+        if ($this->isRunningOnCakePHP()) {
             return $this->runCakePHPMigrations();
-//        }
+        }
+        if ($this->isRunningOnLaravel()) {
+            return $this->runLaravelMigrations();
+        }
     }
 
     public function runCakePHPMigrations()
@@ -125,16 +136,36 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $migrations;
     }
 
+    public function runLaravelMigrations()
+    {
+        Artisan::call('migrate', [
+            '--path' => 'database/migrations/products',
+            '--force' => true
+        ]);
+    }
+
     public function rollbackMigrations($migrations)
     {
-//        if ($this->isRunningOnCakePHP()) {
+        if ($this->isRunningOnCakePHP()) {
             return $this->rollbackCakePHPMigrations($migrations);
-//        }
+        }
+        if ($this->isRunningOnLaravel()) {
+            return $this->rollbackLaravelMigrations($migrations);
+        }
     }
 
     public function rollbackCakePHPMigrations(Migrations $migrations)
     {
         $migrations->rollback();
+    }
+
+    public function rollbackLaravelMigrations()
+    {
+        Artisan::call('migrate:rollback', [
+            '--path'    => 'database/migrations/products',
+            '--force'   => true,
+            '--step'    => 1,
+        ]);
     }
 
     public function createNonExistentConnection(string $name)
@@ -165,5 +196,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
         ];
         $capsule = new Manager();
         $capsule->addConnection($baseConfig);
+    }
+
+    public function getMigrationTableName()
+    {
+        if ($this->isRunningOnCakePHP()) {
+            return 'phinxlog';
+        }
+        if ($this->isRunningOnLaravel()) {
+            return 'migrations';
+        }
     }
 }

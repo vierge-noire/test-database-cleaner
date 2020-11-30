@@ -74,7 +74,7 @@ class BaseTableSnifferTest extends TestCase
         }
     }
 
-    public function testGetAllTablesExceptPhinxlogs()
+    public function testGetAllTablesExceptMigrations()
     {
         $found = $this->testSniffer->getAllTablesExceptMigrations();
         $expected = [
@@ -111,7 +111,7 @@ class BaseTableSnifferTest extends TestCase
         $expected = [
             'cities',
             'countries',
-            'phinxlog',
+            $this->getMigrationTableName(),
             TriggerBasedTableSnifferInterface::DIRTY_TABLE_COLLECTOR
         ];
 

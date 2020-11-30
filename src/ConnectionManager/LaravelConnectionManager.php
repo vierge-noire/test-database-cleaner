@@ -28,16 +28,27 @@ class LaravelConnectionManager implements ConnectionManagerInterface
         return LaravelConnection::class;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTestConnections(): array
     {
-        return [
-            'test'
-        ];
+        $connections = [];
+        foreach (\config('database.connections') as $name => $connection) {
+            if (!$this->skipConnection($connection)) {
+                $connections[] = $name;
+            }
+        }
+        return $connections;
     }
 
-    public function skipConnection(string $connectionName): bool
+    public function skipConnection(array $params): bool
     {
-        return (Manager::connection($connectionName)->getConfig(self::SKIP_CONNECTION_CONFIG_KEY) === true);
+        if (isset($params[self::SNIFFER_CONFIG_KEY])) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function getConnectionSnifferClass(string $connectionName): string

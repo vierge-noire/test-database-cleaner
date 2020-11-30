@@ -31,18 +31,16 @@ class AbstractConnectionTest extends TestCase
             $allTables[] = 'phinxlog_some_plugin';
         }
 
+        if ($this->isRunningOnLaravel()) {
+            $allTables[] = 'migrations';
+        }
+
         $this->assertSame($nonMigrationsTable, $this->testConnection->filterMigrationTables($allTables));
     }
 
     public function testGetConnectionName()
     {
-        if ($this->isRunningOnCakePHP()) {
-            $expect = 'test';
-        }
-        if ($this->isRunningOnLaravel()) {
-            $expect = 'test';
-        }
-        $this->assertSame($expect, $this->testConnection->getConnectionName());
+        $this->assertSame($this->testConnectionName, $this->testConnection->getConnectionName());
     }
 
     public function testFetchList()
