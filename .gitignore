@@ -4,4 +4,3 @@
 **/test_phpunit_listener
 **/dummy_database
 composer.lock
-/tests/Util/laravel_app/storage/
