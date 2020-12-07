@@ -22,19 +22,18 @@ if (!getenv('FRAMEWORK')) {
 
 require_once 'tests/bootstap.php';
 
-$app = require_once ROOT . '/tests/Util/laravel_app/bootstrap/app.php';
-
-/** @var Config $config */
-$config = $app->get(Config::class);
-$config::setFacadeApplication($app);
-
-
 $driver = strtolower(getenv('DB_DRIVER'));
 if ($driver === 'postgres') {
     $driver = 'pgsql';
 }
 
 putenv("LARAVEL_DRIVER=$driver");
+
+$app = require_once ROOT . '/tests/Util/laravel_app/bootstrap/app.php';
+
+/** @var Config $config */
+$config = $app->get(Config::class);
+$config::setFacadeApplication($app);
 
 $capsule = $app->get(Capsule::class);
 

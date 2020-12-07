@@ -11,7 +11,7 @@
 |
 */
 
-$app = new Illuminate\Foundation\Application(getenv('LARAVEL_APP_BASE_PATH'));
+$app = new Illuminate\Foundation\Application('tests/Util/laravel_app');
 
 /*
 |--------------------------------------------------------------------------

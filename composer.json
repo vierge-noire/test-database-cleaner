@@ -15,8 +15,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.3",
-        "phpunit/phpunit": "^6.1"
+        "php": ">=7.3"
     },
     "require-dev": {
         "ext-pdo": "*",
@@ -25,7 +24,11 @@
         "doctrine/orm": "*",
         "josegonzalez/dotenv": "dev-master",
         "laravel/laravel": "9999999-dev",
-        "phpstan/phpstan": "^0.12.48@dev"
+        "phpstan/phpstan": "^0.12.48@dev",
+        "phpunit/phpunit": "^6.1",
+        "symfony/dependency-injection": "9999999-dev",
+        "symfony/framework-bundle": "9999999-dev",
+        "symfony/yaml": "9999999-dev"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +38,7 @@
     "autoload-dev": {
         "psr-4": {
             "CakePHPTestApp\\": "tests/Util/cakephp_app/src",
+            "SymfonyTestApp\\": "tests/Util/symfony_app/src",
             "ViergeNoirePHPUnitListener\\Test\\": "tests"
         }
     },

@@ -14,11 +14,21 @@ declare(strict_types=1);
 
 namespace ViergeNoirePHPUnitListener\Connection;
 
-use Cake\Database\Exception;
-use Illuminate\Database\Capsule\Manager;
+
+use Doctrine\ORM\EntityManager;
 
 class SymfonyConnection extends AbstractConnection
 {
+    public function __construct($em)
+    {
+
+    }
+
+    public function getEM(EntityManager $em)
+    {
+        dd($em);
+    }
+
     public function execute(string $stmt): bool
     {
         return true;
@@ -44,12 +54,14 @@ class SymfonyConnection extends AbstractConnection
      */
     public function fetchList(string $stmt, string $field): array
     {
+        $this->getEM();
+
         try {
             $data = Manager::connection($this->getConnectionName())->select($stmt);
         } catch (\Exception $e) {
             $name = $this->getConnectionName();
             var_dump($e->getMessage());
-            throw new Exception("Error in the connection '$name'.");
+            throw new \Exception("Error in the connection '$name'.");
         }
 
         foreach ($data as $i => $val) {

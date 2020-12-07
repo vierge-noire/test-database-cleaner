@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace ViergeNoirePHPUnitListener\ConnectionManager;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
 use ViergeNoirePHPUnitListener\Connection\SymfonyConnection;
 use ViergeNoirePHPUnitListener\DatabaseCleaner;
 
@@ -27,24 +29,26 @@ class SymfonyConnectionManager implements ConnectionManagerInterface
 
     public function initialize(): void
     {
-//        $baseConfig = [
-//            'driver' => 'pdo_mysql',
-//            'user' => 'root',
-//            'password' => 'root',
-//            'dbname' => 'test_phpunit_listener',
+        $baseConfig = [
+            'driver' => 'pdo_mysql',
+            'user' => 'root',
+            'password' => 'root',
+            'dbname' => 'test_phpunit_listener',
 //            self::SKIP_CONNECTION_CONFIG_KEY => false,
-//        ];
+        ];
 
 
-//        $this->em = DriverManager::getConnection($baseConfig);
+        $this->em = DriverManager::getConnection($baseConfig);
+
+
 
 //        $config = Setup::createAnnotationMetadataConfiguration($paths, true);
 //        $this->em = EntityManager::create($baseConfig, $config);
     }
 
-    public function getConnection(): Connection
+    public function getConnection(EntityManager $entityManager, string $name)
     {
-        return $this->em;
+        $this->container->get('doctrine')->getManager('default');
     }
 
     public function getAbstractConnectionClassName(): string

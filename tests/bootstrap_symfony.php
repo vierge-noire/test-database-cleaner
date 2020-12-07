@@ -16,7 +16,13 @@ require_once "vendor/autoload.php";
 
 use ViergeNoirePHPUnitListener\ConnectionManager\ConnectionManagerInterface;
 
-putenv('FRAMEWORK=Symfony');
+if (!getenv('FRAMEWORK')) {
+    putenv('FRAMEWORK=Symfony');
+}
+
+require_once 'tests/bootstap.php';
+
+define('SYMFONY_APP_ROOT', ROOT . DS . 'tests'. DS . 'Util' . DS . 'symfony_app');
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -32,8 +38,31 @@ $baseConfig = [
     'dbname' => 'test_phpunit_listener',
 ];
 
-$config = Setup::createAnnotationMetadataConfiguration($paths, true);
-$entityManager = EntityManager::create($baseConfig, $config);
+
+
+//$app = new \Symfony\Component\Console\Application('Test Symfony');
+
+$app = new \SymfonyTestApp\Kernel('test', true);
+
+//dd($app->getProjectDir());
+$app->boot();
+
+dd(
+//  $app->getContainer()->get('ViergeNoirePHPUnitListener\Connection\SymfonyInjectedConnection')
+//  $app->getContainer()->get(\Doctrine\ORM\EntityManagerInterface::class)
+  $app->getContainer()->get('doctrine.orm.entity_manager')
+);
+
+//$d = $app->getContainer()
+//    ->get('doctrine.orm.entity_manager');
+//$d = $app->getContainer()->get('test');
+////$d = $app->getBundle('doctrine');
+//dd($d);
+
+//$test = new \ViergeNoirePHPUnitListener\Connection\SymfonyInjectedConnection();
+
+//$config = Setup::createAnnotationMetadataConfiguration($paths, true);
+//$entityManager = EntityManager::create($baseConfig, $config);
 
 
 //$baseConfig = [
@@ -43,9 +72,6 @@ $entityManager = EntityManager::create($baseConfig, $config);
 //    "username" => "root",
 //    "password" => "root"
 //];
-
-
-require_once "tests/bootstrap_cakephp.php";
 
 
 //\Illuminate\Support\Facades\Artisan::call('migrate', array('--path' => 'tests/TestApp/config/Migrations', '--force' => true));
