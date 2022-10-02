@@ -15,40 +15,38 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.3"
+        "ext-pdo": "*",
+        "php": ">=7.3",
+        "phpunit/phpunit": "^8.5.23 || ^9.3"
     },
     "require-dev": {
-        "ext-pdo": "*",
-        "cakephp/datasource": "^4.0",
-        "cakephp/migrations": "^3.0",
-        "doctrine/orm": "*",
-        "josegonzalez/dotenv": "dev-master",
-        "laravel/laravel": "9999999-dev",
-        "phpstan/phpstan": "^0.12.48@dev",
-        "phpunit/phpunit": "^6.1",
-        "symfony/dependency-injection": "9999999-dev",
-        "symfony/framework-bundle": "9999999-dev",
-        "symfony/yaml": "9999999-dev"
+        "cakephp/cakephp-codesniffer": "^4.0",
+        "phpstan/phpstan": "^1.0",
+        "vimeo/psalm": "^4.0"
     },
     "autoload": {
         "psr-4": {
-            "ViergeNoirePHPUnitListener\\": "src"
+            "TestDataBaseCleaner\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CakePHPTestApp\\": "tests/Util/cakephp_app/src",
-            "SymfonyTestApp\\": "tests/Util/symfony_app/src",
-            "ViergeNoirePHPUnitListener\\Test\\": "tests"
+            "TestDataBaseCleaner\\Test\\": "tests"
         }
     },
     "scripts": {
-        "run-tests-mysql": "bash run_tests.sh Mysql",
-        "run-tests-pgsql": "bash run_tests.sh Postgres",
-        "run-tests-sqlite": "bash run_tests.sh Sqlite",
-        "run-phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1"
+        "mysql": "bash run_tests.sh mysql",
+        "pgsql": "bash run_tests.sh postgres",
+        "sqlite": "bash run_tests.sh sqlite",
+        "phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1",
+        "psalm": "./vendor/bin/psalm",
+        "cs-check": "vendor/bin/phpcs --colors -p -s --extensions=php src tests",
+        "cs-fix": "vendor/bin/phpcbf --colors -p -s --extensions=php src tests"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
