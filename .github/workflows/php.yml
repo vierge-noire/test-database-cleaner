@@ -1,4 +1,4 @@
-name: GitHub CI
+name: PHP Tests
 
 on:
   push:
@@ -17,13 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4']
-        db-type: [sqlite, mysql, pgsql]
-        composer-type: [lowest, stable, dev]
-        exclude:
-          # excludes composer lowest on mysql
-          - db-type: mysql
-            composer-type: lowest
+        php-version: ['7.4', '8.1']
+        composer-type: [stable, dev]
 
     name: PHP ${{ matrix.php-version }} & ${{ matrix.db-type }} & ${{ matrix.composer-type }}
 
@@ -33,7 +28,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_DB: test_phpunit_listener
+          POSTGRES_DB: tdc
           POSTGRES_PASSWORD: root
           POSTGRES_USER: root
 
@@ -44,7 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: mbstring, intl, apcu, pdo_${{ matrix.db-type }}
+          extensions: mbstring, intl, apcu, pdo_sqlite, pdo_mysql, pdo_pgsql
           ini-values: apc.enable_cli = 1
 
       - name: Update composer
@@ -55,17 +50,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if [[ ${{ matrix.composer-type }} == 'lowest' ]]; then
-            composer update --prefer-dist --no-progress --no-suggest --prefer-stable --prefer-lowest
-          elif [[ ${{ matrix.composer-type }} == 'stable' ]]; then
+          if [[ ${{ matrix.composer-type }} == 'stable' ]]; then
             composer update --prefer-dist --no-progress --no-suggest --prefer-stable
           else
             composer update --prefer-dist --no-progress --no-suggest
           fi
 
-      - name: Run tests
+      - name: Run Sqlite tests
+        run: composer sqlite
+      - name: Run Mysql tests
         run: |
-          if [ ${{ matrix.db-type }} == 'mysql' ]; then
-            sudo service mysql start && mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE IF NOT EXISTS test_phpunit_listener;';
-          fi
-          composer run-tests-${{ matrix.db-type }}
+          sudo service mysql start && mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE IF NOT EXISTS tdc;';
+          composer mysql
+      - name: Run Postgres tests
+        run: composer pgsql

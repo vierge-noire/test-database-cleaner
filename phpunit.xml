@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    colors="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    bootstrap="./tests/bootstrap.php"
+>
+    <php>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="apc.enable_cli" value="1"/>
+    </php>
+
+    <!-- Add any additional test suites you want to run here -->
+    <testsuites>
+        <testsuite name="UnitTest">
+            <directory>./tests/UnitTest/</directory>
+        </testsuite>
+        <testsuite name="IntegrationTest">
+            <directory>./tests/IntegrationTest/</directory>
+        </testsuite>
+    </testsuites>
+
+    <extensions>
+        <extension class="TestDatabaseCleaner\PHPUnitExtension" />
+    </extensions>
+</phpunit>
