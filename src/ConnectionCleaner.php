@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner;
+namespace TestDatabaseCleaner;
 
-use TestDataBaseCleaner\Error\PDOErrorException;
-use TestDataBaseCleaner\Sniffer\BaseTableSniffer;
+use TestDatabaseCleaner\Error\PDOErrorException;
+use TestDatabaseCleaner\Sniffer\BaseTableSniffer;
 
 /**
  * Connection cleaner
@@ -22,12 +22,12 @@ use TestDataBaseCleaner\Sniffer\BaseTableSniffer;
 final class ConnectionCleaner
 {
     /**
-     * @var \TestDataBaseCleaner\Sniffer\BaseTableSniffer
+     * @var \TestDatabaseCleaner\Sniffer\BaseTableSniffer
      */
     private $sniffer;
 
     /**
-     * @param \TestDataBaseCleaner\Sniffer\BaseTableSniffer $sniffer Table Sniffer
+     * @param \TestDatabaseCleaner\Sniffer\BaseTableSniffer $sniffer Table Sniffer
      */
     public function __construct(BaseTableSniffer $sniffer)
     {
@@ -38,7 +38,7 @@ final class ConnectionCleaner
      * Truncate all the dirty tables
      *
      * @return void
-     * @throws \TestDataBaseCleaner\Error\PDOErrorException if the query failed
+     * @throws \TestDatabaseCleaner\Error\PDOErrorException if the query failed
      */
     public function truncateDirtyTables(): void
     {
@@ -57,7 +57,7 @@ final class ConnectionCleaner
     }
 
     /**
-     * @return \TestDataBaseCleaner\Sniffer\BaseTableSniffer
+     * @return \TestDatabaseCleaner\Sniffer\BaseTableSniffer
      */
     public function getSniffer(): BaseTableSniffer
     {

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Test\UnitTest;
+namespace TestDatabaseCleaner\Test\UnitTest;
 
 use PHPUnit\Framework\TestCase;
-use TestDataBaseCleaner\ConnectionCleaner;
-use TestDataBaseCleaner\Error\PDOErrorException;
-use TestDataBaseCleaner\Sniffer\BaseTableSniffer;
+use TestDatabaseCleaner\ConnectionCleaner;
+use TestDatabaseCleaner\Error\PDOErrorException;
+use TestDatabaseCleaner\Sniffer\BaseTableSniffer;
 
 class ConnectionCleanerTest extends TestCase
 {

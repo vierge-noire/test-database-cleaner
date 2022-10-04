@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Sniffer;
+namespace TestDatabaseCleaner\Sniffer;
 
 use PDO;
 use PDOStatement;
-use TestDataBaseCleaner\Error\PDOErrorException;
+use TestDatabaseCleaner\Error\PDOErrorException;
 
 abstract class BaseTableSniffer
 {
@@ -48,7 +48,7 @@ abstract class BaseTableSniffer
      * Truncate all the dirty tables
      *
      * @return void
-     * @throws \TestDataBaseCleaner\Error\PDOErrorException if the query failed
+     * @throws \TestDatabaseCleaner\Error\PDOErrorException if the query failed
      */
     abstract public function truncateDirtyTables(): void;
 
@@ -121,7 +121,7 @@ abstract class BaseTableSniffer
     /**
      * @param  string $cmd Command to execute
      * @return \PDOStatement
-     * @throws \TestDataBaseCleaner\Error\PDOErrorException if the query returned false
+     * @throws \TestDatabaseCleaner\Error\PDOErrorException if the query returned false
      * @throws \PDOException if the query failed
      */
     protected function execute(string $cmd): PDOStatement
@@ -189,7 +189,7 @@ abstract class BaseTableSniffer
      *
      * @param  string $query Query to fetch
      * @return string[]
-     * @throws \TestDataBaseCleaner\Error\PDOErrorException
+     * @throws \TestDatabaseCleaner\Error\PDOErrorException
      */
     protected function fetchQuery(string $query): array
     {

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Test\UnitTest;
+namespace TestDatabaseCleaner\Test\UnitTest;
 
 use PHPUnit\Framework\TestCase;
-use TestDataBaseCleaner\ConnectionRegistry;
-use TestDataBaseCleaner\Error\ConfigurationErrorException;
-use TestDataBaseCleaner\Sniffer\MysqlTableSniffer;
-use TestDataBaseCleaner\Sniffer\PostgresTableSniffer;
-use TestDataBaseCleaner\Sniffer\SqliteTableSniffer;
+use TestDatabaseCleaner\ConnectionRegistry;
+use TestDatabaseCleaner\Error\ConfigurationErrorException;
+use TestDatabaseCleaner\Sniffer\MysqlTableSniffer;
+use TestDatabaseCleaner\Sniffer\PostgresTableSniffer;
+use TestDatabaseCleaner\Sniffer\SqliteTableSniffer;
 
 class ConnectionRegistryTest extends TestCase
 {
@@ -43,7 +43,7 @@ class ConnectionRegistryTest extends TestCase
     /**
      * @dataProvider dataForValidSniffers
      * @param string $pdoAttribute
-     * @param class-string<\TestDataBaseCleaner\Sniffer\BaseTableSniffer> $expectedSnifferInstance
+     * @param class-string<\TestDatabaseCleaner\Sniffer\BaseTableSniffer> $expectedSnifferInstance
      */
     public function testConnectionRegistry_AddConnection_Valid(string $pdoAttribute, string $expectedSnifferInstance): void
     {

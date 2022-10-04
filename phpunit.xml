@@ -4,7 +4,7 @@
     processIsolation="false"
     stopOnFailure="false"
     bootstrap="./tests/bootstrap.php"
-    >
+>
     <php>
         <ini name="memory_limit" value="-1"/>
         <ini name="apc.enable_cli" value="1"/>
@@ -19,4 +19,8 @@
             <directory>./tests/IntegrationTest/</directory>
         </testsuite>
     </testsuites>
+
+    <extensions>
+        <extension class="TestDatabaseCleaner\PHPUnitExtension" />
+    </extensions>
 </phpunit>

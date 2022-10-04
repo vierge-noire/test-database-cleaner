@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Test\UnitTest\Sniffer;
+namespace TestDatabaseCleaner\Test\UnitTest\Sniffer;
 
 use PHPUnit\Framework\TestCase;
-use TestDataBaseCleaner\Sniffer\BaseTableSniffer;
+use TestDatabaseCleaner\Sniffer\BaseTableSniffer;
 
 class BaseTableSnifferTest extends TestCase
 {

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Sniffer;
+namespace TestDatabaseCleaner\Sniffer;
 
-use TestDataBaseCleaner\Error\PDOErrorException;
+use TestDatabaseCleaner\Error\PDOErrorException;
 
 class SqliteTableSniffer extends BaseTableSniffer
 {

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner;
+namespace TestDatabaseCleaner;
 
 use PDO;
-use TestDataBaseCleaner\Error\ConfigurationErrorException;
-use TestDataBaseCleaner\Error\DriverNotSupportedException;
-use TestDataBaseCleaner\Sniffer\MysqlTableSniffer;
-use TestDataBaseCleaner\Sniffer\PostgresTableSniffer;
-use TestDataBaseCleaner\Sniffer\SqliteTableSniffer;
+use TestDatabaseCleaner\Error\ConfigurationErrorException;
+use TestDatabaseCleaner\Error\DriverNotSupportedException;
+use TestDatabaseCleaner\Sniffer\MysqlTableSniffer;
+use TestDatabaseCleaner\Sniffer\PostgresTableSniffer;
+use TestDatabaseCleaner\Sniffer\SqliteTableSniffer;
 
 /**
  * Connection registry
@@ -28,7 +28,7 @@ final class ConnectionRegistry
     /**
      * Configuration sets.
      *
-     * @var array<array-key, \TestDataBaseCleaner\ConnectionCleaner>
+     * @var array<array-key, \TestDatabaseCleaner\ConnectionCleaner>
      */
     private static $connections = [];
 
@@ -39,8 +39,8 @@ final class ConnectionRegistry
      * @param \PDO $pdo PDO
      * @param  string[] $ignoredTables Tables that should not be truncated (e.g. migrations tables)
      * @return void
-     * @throws \TestDataBaseCleaner\Error\ConfigurationErrorException if the alias is already defined
-     * @throws \TestDataBaseCleaner\Error\DriverNotSupportedException if the driver is not supported
+     * @throws \TestDatabaseCleaner\Error\ConfigurationErrorException if the alias is already defined
+     * @throws \TestDatabaseCleaner\Error\DriverNotSupportedException if the driver is not supported
      */
     public static function addConnection(string $alias, PDO $pdo, array $ignoredTables = []): void
     {
@@ -52,7 +52,7 @@ final class ConnectionRegistry
     }
 
     /**
-     * @return array<array-key, \TestDataBaseCleaner\ConnectionCleaner>
+     * @return array<array-key, \TestDatabaseCleaner\ConnectionCleaner>
      */
     public static function getConnections(): array
     {
@@ -70,8 +70,8 @@ final class ConnectionRegistry
     /**
      * @param \PDO $pdo Connection
      * @param  string[] $ignoredTables Tables that should not be truncated (e.g. migrations tables)
-     * @return \TestDataBaseCleaner\ConnectionCleaner Connection cleaner
-     * @throws \TestDataBaseCleaner\Error\DriverNotSupportedException if the driver is not supported
+     * @return \TestDatabaseCleaner\ConnectionCleaner Connection cleaner
+     * @throws \TestDatabaseCleaner\Error\DriverNotSupportedException if the driver is not supported
      */
     private static function getConnectionCleaner(PDO $pdo, array $ignoredTables): ConnectionCleaner
     {

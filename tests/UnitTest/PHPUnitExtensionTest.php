@@ -11,13 +11,13 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Test\UnitTest;
+namespace TestDatabaseCleaner\Test\UnitTest;
 
 use PHPUnit\Framework\TestCase;
-use TestDataBaseCleaner\PHPUnitExtension;
-use TestDataBaseCleaner\Test\Fixture\Classes\ClassExtendingTruncateDirtyTablesTrait;
-use TestDataBaseCleaner\Test\Fixture\Classes\ClassUsingTraitUsingTruncateDirtyTablesTrait;
-use TestDataBaseCleaner\Test\Fixture\Classes\ClassUsingTruncateDirtyTablesTrait;
+use TestDatabaseCleaner\PHPUnitExtension;
+use TestDatabaseCleaner\Test\Fixture\Classes\ClassExtendingTruncateDirtyTablesTrait;
+use TestDatabaseCleaner\Test\Fixture\Classes\ClassUsingTraitUsingTruncateDirtyTablesTrait;
+use TestDatabaseCleaner\Test\Fixture\Classes\ClassUsingTruncateDirtyTablesTrait;
 
 class PHPUnitExtensionTest extends TestCase
 {

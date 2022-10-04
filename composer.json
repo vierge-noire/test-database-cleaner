@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TestDataBaseCleaner\\": "src"
+            "TestDatabaseCleaner\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TestDataBaseCleaner\\Test\\": "tests"
+            "TestDatabaseCleaner\\Test\\": "tests"
         }
     },
     "scripts": {

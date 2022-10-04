@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner\Test\IntegrationTest\Sniffer;
+namespace TestDatabaseCleaner\Test\IntegrationTest\Sniffer;
 
 use PDO;
 use PHPUnit\Framework\TestCase;
-use TestDataBaseCleaner\Sniffer\BaseTableSniffer;
+use TestDatabaseCleaner\Sniffer\BaseTableSniffer;
 
 class BaseTableSnifferIntegrationTest extends TestCase
 {
@@ -48,10 +48,10 @@ class BaseTableSnifferIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::getDirtyTables
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::fetchQuery
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::execute
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::markAllTablesToCleanAsDirty
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::getDirtyTables
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::fetchQuery
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::execute
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::markAllTablesToCleanAsDirty
      */
     public function testBaseTableSniffer_getDirtyTables(): void
     {
@@ -62,9 +62,9 @@ class BaseTableSnifferIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::getAllNonIgnoredTables
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::getAllTables
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::fetchAllTables
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::getAllNonIgnoredTables
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::getAllTables
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::fetchAllTables
      */
     public function testBaseTableSniffer_getAllNonIgnoredTables(): void
     {
@@ -77,9 +77,9 @@ class BaseTableSnifferIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::dropTriggers
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::getTriggers
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::createTriggerFor
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::dropTriggers
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::getTriggers
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::createTriggerFor
      */
     public function testBaseTableSniffer_CreateTriggerFor(): void
     {
@@ -97,7 +97,7 @@ class BaseTableSnifferIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \TestDataBaseCleaner\Sniffer\BaseTableSniffer::createTruncateDirtyTablesProcedure
+     * @covers \TestDatabaseCleaner\Sniffer\BaseTableSniffer::createTruncateDirtyTablesProcedure
      */
     public function testBaseTableSniffer_CreateTruncateDirtyTablesProcedure(): void
     {

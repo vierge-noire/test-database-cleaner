@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @since     1.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace TestDataBaseCleaner;
+namespace TestDatabaseCleaner;
 
 use PHPUnit\Runner\BeforeTestHook;
 
@@ -28,11 +28,12 @@ class PHPUnitExtension implements BeforeTestHook
      */
     public function executeBeforeTest(string $test): void
     {
-        if (!$this->isTestUsingTruncateDirtyTableTrait($test)) {
+        $testClass = explode('::', $test)[0];
+        if (!$this->isTestUsingTruncateDirtyTableTrait($testClass)) {
             return;
         }
 
-        foreach (ConnectionRegistry::getConnections() as $alias => $connectionCleaners) {
+        foreach (ConnectionRegistry::getConnections() as $connectionCleaners) {
             $connectionCleaners->truncateDirtyTables();
         }
     }
