@@ -1,5 +1,5 @@
 {
-    "name": "vierge-noire/phpunit-listener",
+    "name": "vierge-noire/test-database-cleaner",
     "description": "A PHPUnit listener to refresh your database between each test.",
     "type": "library",
     "license": "MIT",
