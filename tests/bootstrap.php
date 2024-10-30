@@ -28,10 +28,10 @@ if (!defined('TEST_DNS')) {
             $dns = 'sqlite:test.db';
             break;
         case 'mysql':
-            $dns = 'mysql:host=db;dbname=db;user=db;password=db';
+            $dns = 'mysql:host=localhost;dbname=tdc;user=root;password=root';
             break;
         case 'postgres':
-            $dns = 'pgsql:host=db;dbname=db;user=db;password=db';
+            $dns = 'pgsql:host=localhost;dbname=tdc;user=root;password=root';
             break;
         default:
             throw new Exception("The driver $driver is not supported.");
