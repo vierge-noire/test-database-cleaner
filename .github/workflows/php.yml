@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4', '8.1']
+        php-version: ['7.4', '8.3']
         composer-type: [stable, dev]
 
     name: PHP ${{ matrix.php-version }} & ${{ matrix.db-type }} & ${{ matrix.composer-type }}
